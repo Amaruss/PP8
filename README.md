@@ -134,7 +134,10 @@ In this exercise you will:
 #### Reflection Questions
 
 1. **How do you pass a file name to a program using the `-i` and `-o` options?**
+Mit -i wird die Eingabedatei und mit -o die Ausgabedatei über die Kommandozeile angegeben, z. B. -i input.txt -o output.txt.
+   
 2. **What are typical use cases for parameters versus flags? How do the differ from one another?**
+Flags schalten Funktionen ein oder aus (z. B. -a), Parameter übergeben zusätzliche Werte wie Zahlen, Texte oder Dateinamen (z. B. -n 42).
 
 ---
 
@@ -187,7 +190,8 @@ In this exercise you will:
 #### Reflection Question
 
 * **Why is a run-to-completion (batch) approach often preferable to interactive input?**
-
+Batch-Verarbeitung ermöglicht automatische und wiederholbare Abläufe ohne Benutzereingriffe.
+Sie eignet sich besser für Skripte und die Verarbeitung großer Datenmengen.
 ---
 
 ### Task 4: Input Redirection from STDIN
@@ -202,65 +206,67 @@ In this exercise you will:
 
    int main(void) {
        char buf[BUF_SIZE];
-       if (fgets(buf, BUF_SIZE, stdin))
-           printf("You entered: %s", buf);
-       return 0;
+       wenn (fgets(buf, BUF_SIZE, stdin))
+           printf("Sie haben eingegeben: %s", buf);
+       returniere 0;
    }
    ```
-2. Create `solutions/input.txt` with sample text.
-3. Compile and run:
+2. Erstellen `Lösungen/Eingabe.txt` mit Beispieltext.
+3. Kompilieren und ausführen:
 
    ```bash
-   gcc -o solutions/redirect_input solutions/redirect_input.c
-   ./solutions/redirect_input < solutions/input.txt
+   gcc -o Lösungen/redirect_input Lösungen/redirect_input.c
+   ./lösungen/redirect_input < Lösungen/input.txt
    ```
 
-#### Reflection Question
+#### Reflexionsfrage
 
-* **What is the difference between redirecting to stdin and explicitly opening a file with `fopen`?**
+* **Was ist der Unterschied zwischen der Weiterleitung zu stdin und dem expliziten Öffnen einer Datei mit `fopen`?**
+Bei stdin-Umgebung liest das Programm Daten aus der Standard-Eingabe, ohne den Terminamen zu kennen.
+fopen öffnet eine beste Datumsangabe im Programmcode.
 
 ---
 
-### Task 5: Caesar Cipher & Prototype Asymmetric XOR Cipher
+### Aufgabe 5: Caesar-Chiffre und Prototyp einer asymmetrischen XOR-Chiffre
 
-**Objective:** Implement and modularize two cipher algorithms.
+**Ziel:** Implementieren und modularisieren Sie zwei Chiffrieralgorithmen.
 
-#### 5.1 Symmetric Caesar Cipher
+#### 5.1 Symmetrische Caesar-Chiffre
 
-1. **Header (`cipher.h`)**:
+1. **Kopfzeile (`Chiffre.h`)**:
 
    ```c
-   #ifndef CIPHER_H
-   #define CIPHER_H
+   #ifndef CHIFFRE_H
+   #define CHIFFRE_H
    char encrypt_char(char c, int shift);
    char decrypt_char(char c, int shift);
    #endif
    ```
-2. **Implementation (`cipher.c`)**:
+2. **Umsetzung (`Chiffre.c`)**:
 
    ```c
-   #include "cipher.h"
+   #include "chiffre.h"
 
    char encrypt_char(char c, int shift) {
-       if (c >= 'A' && c <= 'Z') return 'A' + (c - 'A' + shift) % 26;
-       if (c >= 'a' && c <= 'z') return 'a' + (c - 'a' + shift) % 26;
-       return c;
+       wenn (c >= 'A' && c <= 'Z') returniere 'A' + (c - 'A' + shift) % 26;
+       wenn (c >= 'a' && c <= 'z') returniere 'a' + (c - 'a' + shift) % 26;
+       c zurückgeben;
    }
 
    char decrypt_char(char c, int shift) {
-       return encrypt_char(c, 26 - (shift % 26));
+       returniere encrypt_char(c, 26 - (Umschalt % 26));
    }
    ```
-3. **Driver (`caesar.c`)**:
+3. **Treiber (`Caesar.c`)**:
 
    ```c
    #include <stdio.h>
    #include <stdlib.h>
    #include <unistd.h>
-   #include "cipher.h"
+   #include "chiffre.h"
 
    void usage(const char *prog) {
-       fprintf(stderr, "Usage: %s -e shift|-d shift -i infile -o outfile\n", prog);
+       fprintf(stderr, "Verwendung: %s -e shift|-d shift -i infile -o outfile\n", prog);
        exit(EXIT_FAILURE);
    }
 
@@ -268,37 +274,37 @@ In this exercise you will:
        int opt, shift = 0, enc = -1;
        char *infile = NULL, *outfile = NULL;
 
-       while ((opt = getopt(argc, argv, "e:d:i:o:")) != -1) {
-           if      (opt == 'e') { shift = atoi(optarg); enc = 1; }
-           else if (opt == 'd') { shift = atoi(optarg); enc = 0; }
-           else if (opt == 'i') infile = optarg;
-           else if (opt == 'o') outfile = optarg;
-           else usage(argv[0]);
+       würrend ((opt = getopt(argc, argv, "e:d:i:o:")) != -1) {
+           if (opt == 'e') { shift = atoi(optarg); enc = 1; }
+           sonst wenn (opt == 'd') { shift = atoi(optarg); enc = 0; }
+           sonst wenn (opt == 'i') infile = optarg;
+           sonst wenn (opt == 'o') Ausgabedatei = optarg;
+           sonst Bearbeitung (argv [0]);
        }
 
-       if (enc < 0 || !infile || !outfile) usage(argv[0]);
+       wenn (enc < 0 || !Einfügen || !Ausgabedatei) Bearbeitung (argv [0]);
 
-       FILE *fin = fopen(infile, "r");
-       if (!fin) { perror("fopen infile"); exit(EXIT_FAILURE); }
-       FILE *fout = fopen(outfile, "w");
-       if (!fout) { perror("fopen outfile"); exit(EXIT_FAILURE); }
+       DATI *fin = fopen(infile, "r");
+       wenn (!fin) { perror("fopen infile"); exit(EXIT_FAILURE); }
+       DATI *fout = fopen(outfile, "w");
+       wenn (!fout) { perror("fopen outfile"); exit(EXIT_FAILURE); }
 
        int c;
-       while ((c = fgetc(fin)) != EOF) {
-           char out;
-           if (enc)
-               out = encrypt_char(c, shift);
-           else
-               out = decrypt_char(c, shift);
+       while ((c = fgetc (fin))!= EOF) {
+           Auschargen;
+           wenn (enc)
+ Aufgabe 5: Caesar-Chiffre und Prototyp einer asymmetrischen XOR-Chiffre
+---
+fopen öffnet eine beste Datumsangabe im Programmcode.
            fputc(out, fout);
        }
 
        fclose(fin);
        fclose(fout);
-       return 0;
+       Rückkehrer 0;
    }
    ```
-4. **Compile & link**:
+4. **Kompilieren und Verlinken**:
 
    ```bash
    gcc -c solutions/cipher.c -o solutions/cipher.o
@@ -312,18 +318,18 @@ In this exercise you will:
    ./solutions/caesar -d 3 -i enc.txt -o dec.txt
    ```
 
-#### 5.2 Prototype Asymmetric XOR Cipher
+#### 5.2 Prototyp eines asymmetrischen XOR-Chiffre
 
-1. **Header (`asym.h`)**:
+1. **Kopfzeile (`asym.h`)**:
 
    ```c
    #ifndef ASYM_H
    #define ASYM_H
    char encrypt_xor(char c, char key);
-   char decrypt_xor(char c, char key);
+   char decrypt_xor (char c, char key);
    #endif
    ```
-2. **Implementation (`asym.c`)**:
+2. **Umsetzung (`asym.c`)**:
 
    ```c
    #include "asym.h"
@@ -331,84 +337,85 @@ In this exercise you will:
    char encrypt_xor(char c, char key) { return c ^ key; }
    char decrypt_xor(char c, char key) { return c ^ key; }
    ```
-3. **Driver (`advanced_cipher.c`)**:
+3. **Treiber (`advanced_cipher.c`)**:
 
    ```c
    #include <stdio.h>
    #include <stdlib.h>
    #include <string.h>
    #include <unistd.h>
-   #include "cipher.h"
+   #include "chiffre.h"
    #include "asym.h"
 
    void usage(const char *prog) {
-       fprintf(stderr, "Usage: %s -m <caesar|xor> -e key|-d key -i infile -o outfile\n", prog);
+       fprintf(stderr, "Verwendung: %s -m <caesar|xor> -e key|-d key -i infile -o outfile\n", prog);
        exit(EXIT_FAILURE);
-   }
+    DATI *fin = fopen(infile, "r"); DATI *fin = fopen(infile, "r");}
 
    int main(int argc, char *argv[]) {
-       int opt, enc = -1, key = 0;
-       char *mode = NULL, *infile = NULL, *outfile = NULL;
+       int opt, enc = -1, Schlüssel = 0;
+    wenn (!fout) { perror("fopen outfile"); exit(EXIT_FAILURE); } char *mode = NULL, *infile = NULL, *outfile = NULL;
 
-       while ((opt = getopt(argc, argv, "m:e:d:i:o:")) != -1) {
-           if      (opt == 'm') mode = optarg;
-           else if (opt == 'e') { key = atoi(optarg); enc = 1; }
-           else if (opt == 'd') { key = atoi(optarg); enc = 0; }
-           else if (opt == 'i') infile = optarg;
-           else if (opt == 'o') outfile = optarg;
-           else usage(argv[0]);
+       würrend ((opt = getopt(argc, argv, "m:e:d:i:o:")) != -1) {
+           wenn (opt == 'm') Modus = optarg;
+           sonst wenn (opt == 'e') { Schlüssel = atoi(optarg); enc = 1; }
+           sonst wenn (opt == 'd') { Schlüssel = atoi(optarg); enc = 0; }
+           sonst wenn (opt == 'i') infile = optarg;
+           sonst wenn (opt == 'o') Ausgabedatei = optarg;
+           sonst Bearbeitung (argv [0]);
        }
 
-       if (!mode || enc < 0 || !infile || !outfile) usage(argv[0]);
+       wenn (!Modus || enc < 0 || !Einfügen || !Ausgabedatei) Bearbeitung (argv [0]);
 
-       FILE *fin = fopen(infile, "r");
-       if (!fin) { perror("fopen infile"); exit(EXIT_FAILURE); }
-       FILE *fout = fopen(outfile, "w");
-       if (!fout) { perror("fopen outfile"); exit(EXIT_FAILURE); }
+       DATI *fin = fopen(infile, "r");
+       wenn (!fin) { perror("fopen infile"); exit(EXIT_FAILURE); }
+       DATI *fout = fopen(outfile, "w");
+       wenn (!fout) { perror("fopen outfile"); exit(EXIT_FAILURE); }
 
        int c;
-       while ((c = fgetc(fin)) != EOF) {
-           char out;
-           if (strcmp(mode, "caesar") == 0) {
-               if (enc)
-                   out = encrypt_char(c, key);
-               else
-                   out = decrypt_char(c, key);
-           } else if (strcmp(mode, "xor") == 0) {
-               if (enc)
+       while ((c = fgetc (fin))!= EOF) {
+           Auschargen;
+4. **Kompilieren und Verlinken**: wenn (enc < 0 || !Einfügen || !Ausgabedatei) Bearbeitung (argv [0]);
+               wenn (enc)
+                   out = encrypt_char(c, Schlüssel);
+               sonst
+   **
+Test } sonst wenn (strcmp (Modus, "xor") == 0) {
+               wenn (enc)
                    out = encrypt_xor(c, (char)key);
-               else
+               sonst
                    out = decrypt_xor(c, (char)key);
-           } else {
-               usage(argv[0]);
+           } sonst {
+               Bearbeitung (argv [0]);
            }
            fputc(out, fout);
        }
 
        fclose(fin);
        fclose(fout);
-       return 0;
+       Rückkehrer 0;
    }
    ```
-4. **Compile & link**:
+4. **Kompilieren und Verlinken**:
 
    ```bash
    gcc -c solutions/cipher.c solutions/asym.c solutions/advanced_cipher.c
    gcc solutions/cipher.o solutions/asym.o solutions/advanced_cipher.o -o solutions/advanced_cipher
    ```
-5. **Test both modes**:
+5. **Testen Sie beide Modi**:
 
    ```bash
    ./solutions/advanced_cipher -m caesar -e 3 -i input.txt -o enc.txt
    ./solutions/advanced_cipher -m caesar -d 3 -i enc.txt -o dec.txt
-   ./solutions/advanced_cipher -m xor    -e 42 -i input.txt -o xor_enc.txt
-   ./solutions/advanced_cipher -m xor    -d 42 -i xor_enc.txt -o xor_dec.txt
+   ./solutions/advanced_cipher -m xor -e 42 -i input.txt -o xor_enc.txt
+   ./solutions/advanced_cipher -m xor -d 42 -i xor_enc.txt -o xor_dec.txt
    ```
 
-#### Reflection Question
+#### Reflexionsfrage
 
-* **Explain in your own words what the encryption and decryption processes are doing in both ciphers.**
-
+* **Erklären Sie in Ihren eigenen Worten, war die Versicherungs- und Entschlösungsforschung in beiden Chiffren bewirken.**
+Die Caesar-Chiffre verschiebt Buchstaben um eine feste Anzahl von Stellen; Entschlosselung verschiebt sie zurück.
+Die XOR-Chiffre verknüpft jedes Zeichen mit einem Schlüssel per XOR, wobei derselbe Schlüssel zum Ent- und Verschlüsseln genutzt wird.
 ---
 
-**Remember:** Stop after **90 minutes** and record where you stopped.
+**Denken Sie an Daran:** Nach dem Ende anhalten **90 Minuten** und notieren Sie, wo Sie angehalten haben.
